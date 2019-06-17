@@ -21,12 +21,12 @@ def predict(*args):
 
 def predict_text(*args):
     """displayed the prediction of the text in text window """
-    
+
     textp = text.get()
     predicted_text= str(get_prediction(textp))
-    ttk.Label(mainframe, text="").grid(column=0, row=5)
+    ttk.Label(root, text="").grid(column=0, row=5)
     result = textp+" "+predicted_text
-    text_window = tk.Text(mainframe, width=50, height=5)
+    text_window = tk.Text(root, width=50, height=5)
     text_window.grid(column=0, row=5)
     text_window.insert(tk.END, result)
 
@@ -37,66 +37,53 @@ def browse():
     path.set(file_path)
 
 
-#root and title
-root = Tk()
-root.title("predict app")
-
-#main frames
-mainframe= ttk.Frame(root, padding="3 3 12 12")
-mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
-
-#variables
-
-path=StringVar()
-text= StringVar()
-out = StringVar()
-
-#creating intries and labels and buttons
-text_label = ttk.Label(mainframe, text="text")
-text_entry = ttk.Entry(mainframe, width=50, textvariable=text)
-browse_entry = ttk.Entry(mainframe, width=10, textvariable=path)
-browse_button = ttk.Button(mainframe, text="Browse", command=browse)
-predict_button = ttk.Button(mainframe, text ="predict file", command=predict)
-predict_text_button= ttk.Button(mainframe, text ="predict text", command=predict_text)
+# Window initialization
+root = tk.Tk()
+root.config(bg='#252529')
+#root.geometry("400x300")
+root.title("Voice Detector")
+label_font = ('Arial',20, 'bold')
+path= StringVar()
+text = StringVar()
+out=StringVar()
 
 
-#geometry setting
-text_label.grid(column=1, row=0, sticky=(E,W))
-text_entry.grid(column=0, row=0, sticky=(E,W))
-browse_entry.grid(column=0, row=1, sticky=(E,W))
-browse_button.grid(column=1, row=1, sticky=(E,W))
-predict_button.grid(column=0, row=3, sticky=(E))
-predict_text_button.grid(column=0, row=3, sticky=(W))
+#text
+text_entry = Entry(root, width=50,textvariable=text)
+text_entry.grid(row=0, column=0)
 
-# add padding around all mainframe children 
-for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
+text_label = Label(root, text='text')
+text_label.config(font=label_font, fg='#ccc', bg='#252529')
+text_label.config(height=1, width=20)
+text_label.grid(row=0, column=1)
+# browse_label.config(padx=20)
 
+#Browse
+browse_entry = Entry(root, width=50,textvariable=path)
+browse_entry.grid(row=1, column=0)
+
+browse_button = Button(root, text="Browse", command=browse)
+browse_button.grid(row=1, column=1)
+browse_button.config(padx=0)
+browse_button.config(width=15)
+browse_button.config(bg='#b90415',fg='#ccc')
+
+
+#predict Buttons
+predict_text_button = Button(root, text="Predict Text ", command=predict_text)
+predict_text_button.grid(row=2, column=0)
+predict_text_button.config(padx=100)
+predict_text_button.config(width=5, height=2)
+predict_text_button.config(font=label_font, fg='#ccc', bg='#b90415')
+
+predict_file_button = Button(root, text="Predict File ", command=predict)
+predict_file_button.grid(row=2, column=1)
+predict_file_button.config(padx=100)
+predict_file_button.config(width=5, height=2)
+predict_file_button.config(font=label_font, fg='#ccc', bg='#b90415')
+
+
+
+
+for child in root.winfo_children(): child.grid_configure(padx=5, pady=5)
 root.mainloop()
-
-
-
-# old code
-
-#learn = prepare_learner_cpu()
-
-#from model import predict_file22
-
-    
-# def predict_file22(path):
-#     print("0")
-#     df = pd.read_csv(path)
-#     review = df.iloc[:,0]
-#     print("pred")
-#     prediction = [get_prediction(i,learn).tolist() for i in review]
-#     df['Predict'] = prediction
-#     print("1")
-#     store_csv(df,path)
-#     print("2")
-#     visual_hist(df)
-#     #return prediction
-
-# def get_prediction(review):
-#     x = learn.predict(review)
-#     return np.argmax(x[-1],0)
