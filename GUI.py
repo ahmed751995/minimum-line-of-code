@@ -23,15 +23,18 @@ def predict_text(*args):
     """displayed the prediction of the text in text window """
 
     textp = text.get()
-    predicted_text= str(get_prediction(textp))
+    predicted_text= get_prediction(textp)
+    if predicted_text.tolist()[0] == 1: result = "Positive"
+    else: result = "Negative"
     ttk.Label(root, text="").grid(column=0, row=5)
-    result = textp+" "+predicted_text
     text_window = tk.Text(root, width=50, height=5)
-    text_window.grid(column=0, row=5)
+    text_window.grid(column=0, row=5, columnspan =2)
     text_window.insert(tk.END, result)
+    text_window.config(font=('Arial', 30, 'bold'))
 
 def browse():
     """ display the path of selected file """
+
     curr_directory = os.getcwd()
     file_path = filedialog.askopenfilename(initialdir = curr_directory, title = "Select file",filetypes = (("csv file","*.csv"),("all files","*.*")))
     path.set(file_path)
@@ -41,7 +44,7 @@ def browse():
 root = tk.Tk()
 root.config(bg='#252529')
 #root.geometry("400x300")
-root.title("Voice Detector")
+root.title("Rewiew Classifier")
 label_font = ('Arial',20, 'bold')
 path= StringVar()
 text = StringVar()
